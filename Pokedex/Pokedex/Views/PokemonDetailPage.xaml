@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:local="clr-namespace:Pokedex.ViewModels"
+  xmlns:model="clr-namespace:Pokedex.Models" x:Class="Pokedex.Views.PokemonDetailPage" Title="{Binding Title}">
+  <ContentPage.Content>
+    <StackLayout x:DataType="local:PokemonDetailViewModel">
+      <Label Text="Salut" TextColor="Red" FontSize="Large" />
+      <Label Text="{Binding PokemonDetail.id}" TextColor="Red" FontSize="Body" />
+      <Label Text="{Binding PokemonDetail.name}" TextColor="Red" FontSize="Body" />
+        </StackLayout>
+  </ContentPage.Content>
+</ContentPage>
