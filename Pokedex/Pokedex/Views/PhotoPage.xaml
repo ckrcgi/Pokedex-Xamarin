@@ -6,8 +6,11 @@
         <StackLayout x:DataType="vm:PhotoViewModel">
             <Button Command="{Binding TakePhotoCommand}" Text="Prendre Photo" />
             <Button Command="{Binding NavigateCommand}" Text="Navigate" />
-            <Label Text="PhotoPath" />
+            <Button Command="{Binding ScanCommand}" Text="Scan" />
+            <Label Text="PhotoPath : " />
             <Label Text="{Binding PhotoPath}" />
+            <Label Text="Barcode : " />
+            <Label Text="{Binding BarCode}" />
             <Image Source="{Binding PhotoPath}" />
         </StackLayout>
     </ContentPage.Content>

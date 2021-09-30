@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Honeywell.BarcodeReader" Version="1.32.7.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="16.2.6" />
     <PackageReference Include="Refit" Version="6.0.94" />
