@@ -1,4 +1,4 @@
-using Honeywell.AIDC.CrossPlatform;
+//using Honeywell.AIDC.CrossPlatform;
 using Pokedex.Services;
 using ReactiveUI;
 using ReactiveUI.XamForms;
@@ -7,7 +7,7 @@ using Xamarin.Forms;
 namespace Pokedex.ViewModels {
   public class PhotoViewModel : BaseViewModel {
     private readonly IPhotoService _photoService;
-    private readonly IBarCodeReader _reader;
+    //private readonly IBarCodeReader _reader;
     private ImageSource _imageSrc;
     private string _photoPath;
     private string _barCode;
@@ -33,16 +33,16 @@ namespace Pokedex.ViewModels {
 
     public PhotoViewModel() {
       _photoService = DependencyService.Get<IPhotoService>();
-      _reader = DependencyService.Get<IBarCodeReader>();
+      //_reader = DependencyService.Get<IBarCodeReader>();
 
-      _reader.BarcodeDataHasBeenReceived += OnBarCodeDataReceived;
+      //_reader.BarcodeDataHasBeenReceived += OnBarCodeDataReceived;
 
       TakePhotoCommand = new Command(async () => PhotoPath = await _photoService.TakePhoto());
       NavigateCommand = new Command(async () => await Shell.Current.GoToAsync("home"));
     }
 
-    private void OnBarCodeDataReceived(object sender, BarcodeDataArgs e) {
-      BarCode = e.Data;
-    }
+    //private void OnBarCodeDataReceived(object sender, BarcodeDataArgs e) {
+    //  BarCode = e.Data;
+    //}
   }
 }

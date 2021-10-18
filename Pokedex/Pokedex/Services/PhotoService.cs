@@ -44,7 +44,7 @@ namespace Pokedex.Services {
       using (var stream = await photo.OpenReadAsync().ConfigureAwait(false))
       using (var newStream = File.OpenWrite(newFile)) {
         await stream.CopyToAsync(newStream).ConfigureAwait(false);
-        // await SendPhoto(newStream, photo);
+        await SendPhoto(newStream, photo);
       }
       return newFile;
     }

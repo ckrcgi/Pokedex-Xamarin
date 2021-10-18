@@ -12,7 +12,7 @@ namespace Pokedex {
       DependencyService.Register<PokemonsService>();
       DependencyService.Register<ConnectivityService>();
       DependencyService.Register<PhotoService>();
-      DependencyService.Register<BarCodeReader>();
+      //DependencyService.Register<BarCodeReader>();
       MainPage = new AppShell();
     }
 
