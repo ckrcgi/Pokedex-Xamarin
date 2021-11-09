@@ -14,7 +14,7 @@ namespace Pokedex.Services {
 
     public PhotoService() {
       ErrorSubject = new Subject<string>();
-      _api = RestService.For<IAscentApi>("https://192.168.1.123:5001");
+      _api = RestService.For<IAscentApi>("http://3638-77-131-3-239.ngrok.io");
     }
 
     public async Task<string> TakePhoto() {
@@ -41,31 +41,20 @@ namespace Pokedex.Services {
         return null;
       }
       var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
-      using (var stream = await photo.OpenReadAsync().ConfigureAwait(false))
-      using (var newStream = File.OpenWrite(newFile)) {
-        await stream.CopyToAsync(newStream).ConfigureAwait(false);
-        // await SendPhoto(newStream, photo);
+      using (var stream = await photo.OpenReadAsync().ConfigureAwait(false)) {
+        await SendPhoto(stream, photo);
       }
+      //using (var newStream = File.OpenWrite(newFile)) {
+      //  await stream.CopyToAsync(newStream).ConfigureAwait(false);
+      //  await SendPhoto(newStream, photo);
+      //}
       return newFile;
     }
 
-    async Task SendPhoto(FileStream stream, FileResult photo) {
-      // using (HttpClient client = new HttpClient()) {
-      //   using (HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:5001/users")) {
-      //     using (HttpContent content = responseMessage.Content) {
-      //       var data = await content.ReadAsStreamAsync();
-      //       if (data != null) Console.WriteLine("data---------------{0}", data);
-      //     }
-      //   }
-      // }
+    async Task SendPhoto(Stream stream, FileResult photo) {
       try {
-        var res = await _api.PostAuth(new AuthBody { username = "username", password = "password" }).ConfigureAwait(false);
-        Console.WriteLine(res);
-        await _api.PostMedias(
-          new StreamPart(stream, photo.FileName, photo.ContentType),
-          "{\"picture_event_type\":\"PHOTO_INITIALE_CARGAISON\"",
-          res.JwtToken
-        ).ConfigureAwait(false);
+        StreamPart streamPart = new StreamPart(stream, photo.FileName, photo.ContentType);
+        await _api.PostMedias("{\"name\":\"test\"}", streamPart).ConfigureAwait(false);
       } catch (Exception e) {
         Console.WriteLine("Error : ", e.ToString());
       }
