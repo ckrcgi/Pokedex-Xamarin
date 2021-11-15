@@ -37,27 +37,49 @@ namespace Pokedex.Services {
     }
 
     public async Task<string> SavePhoto(FileResult photo) {
-      if (photo == null) {
-        return null;
-      }
-      var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+      if (photo == null) return null;
+
+      string fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
+      var newFilePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
       using (var stream = await photo.OpenReadAsync().ConfigureAwait(false)) {
-        await SendPhoto(stream, photo);
+        using (var newStream = File.OpenWrite(newFilePath)) {
+          await stream.CopyToAsync(newStream).ConfigureAwait(false);
+        }
+        try {
+          await SendPhoto(stream, fileName, photo.ContentType, "{\"event_type\":\"ARRIVEE_TOURNEE_SUR_PDL_(ZDE1)\",\"is_signature_picture\":false}");
+        } catch (Exception e) {
+          Console.WriteLine($"SendPhoto THREW: {e.Message}");
+        }
       }
-      //using (var newStream = File.OpenWrite(newFile)) {
-      //  await stream.CopyToAsync(newStream).ConfigureAwait(false);
-      //  await SendPhoto(newStream, photo);
-      //}
-      return newFile;
+
+      return newFilePath;
     }
 
-    async Task SendPhoto(Stream stream, FileResult photo) {
+    async Task SendPhoto(Stream stream, string fileName, string contentType, string data) {
+      Console.WriteLine(stream);
       try {
-        StreamPart streamPart = new StreamPart(stream, photo.FileName, photo.ContentType);
-        await _api.PostMedias("{\"name\":\"test\"}", streamPart).ConfigureAwait(false);
+        StreamPart streamPart = new StreamPart(stream, fileName, contentType);
+        await _api.PostMedias(data, streamPart).ConfigureAwait(false);
       } catch (Exception e) {
         Console.WriteLine("Error : ", e.ToString());
       }
     }
+
+    async Task ResendPhoto(string fileName, string data) {
+      string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+      string fileExtension = Path.GetExtension(filePath);
+
+      using (var stream = File.OpenRead(filePath)) {
+        await SendPhoto(stream, fileName, GetMimeType(fileExtension), data);
+      }
+    }
+
+    string GetMimeType(string extension) {
+      switch (extension) {
+        case "png": return "image/png";
+        default: return "image/jpeg";
+      }
+    }
   }
 }
+
