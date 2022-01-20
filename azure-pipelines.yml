@@ -14,45 +14,32 @@ variables:
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
 steps:
-# - task: NuGetToolInstaller@1
-
-# - task: NuGetCommand@2
-#   inputs:
-#     restoreSolution: '**/*.sln'
-
-# - task: XamarinAndroid@1
-#   inputs:
-#     projectFile: '**/*droid*.csproj'
-#     outputDirectory: '$(outputDirectory)'
-#     configuration: '$(buildConfiguration)'
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '**/*.sln'
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups?groupIds=6&api-version=6.0"
-      Write-Host $url
+      # Relative path to the Android Manifest file
+      $MANIFEST_PATH = '.\Pokedex\Pokedex.Android\Properties\AndroidManifest.xml'
       
-      function CreateJsonBody {
-        $value = @"
-      {
-        "variables": {
-          "versionCode": {
-            "isSecret": false,
-            "value": "2"
-          }
-        }
-      }
-      "@
+      # Get current verisonCode from Azure variables and increment it
+      $newVersion = [int]'12' + 1
       
-        return $value
-      }
+      # Replace the actual versionCode with the new incremented one in the Android Manifest file
+      $replaceWith = 'android:versionCode="' + $newVersion + '"'
+      $content = [System.IO.File]::ReadAllText($MANIFEST_PATH) -replace 'android:versionCode="(.*?)"', $replaceWith
+      [System.IO.File]::WriteAllText($MANIFEST_PATH, $content)
       
-      $json = CreateJsonBody
-      Write-Host $env:SYSTEM_ACCESSTOKEN
+      # Build the app
       
+      # Release the app update to the Playstore
       
-      $pipeline = Invoke-RestMethod -Uri $url -Method Get -ContentType "application/json" -Headers @{
-        Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
-      }
-      
-      Write-Host "Response:" $pipeline
+      # Update versionCode in Azure variables
+- task: XamarinAndroid@1
+  inputs:
+    projectFile: '**/*droid*.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: '$(buildConfiguration)'
