@@ -48,6 +48,7 @@ steps:
       }
       
       $json = CreateJsonBody
+      Write-Host $env:SYSTEM_ACCESSTOKEN
       
       
       $pipeline = Invoke-RestMethod -Uri $url -Method Put -Body $json -ContentType "application/json" -Headers @{
