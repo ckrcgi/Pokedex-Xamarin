@@ -23,7 +23,7 @@ steps:
     targetType: 'inline'
     script: |
       # Relative path to the Android Manifest file
-      $MANIFEST_PATH = '.\Pokedex\Pokedex.Android\Properties\AndroidManifest.xml'
+      $MANIFEST_PATH = './Pokedex/Pokedex.Android/Properties/AndroidManifest.xml'
       
       # Get current verisonCode from Azure variables and increment it
       $newVersion = [int]'12' + 1
