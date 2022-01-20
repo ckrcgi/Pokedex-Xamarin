@@ -30,31 +30,10 @@ steps:
     targetType: 'inline'
     script: |
       $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups/6?api-version=6.0"
-      Write-Host $url
-      
-      function CreateJsonBody {
-        $value = @"
-      {
-        "id": 6,
-        "type": "Vsts",
-        "name": "Pokedex",
-        "variables": {
-          "versionCode": {
-            "isSecret": false,
-            "value": "2"
-          }
-        }
-      }
-      "@
-      
-        return $value
-      }
-      
-      $json = CreateJsonBody
-      
-      
-      $pipeline = Invoke-RestMethod -Uri $url -Method Put -Body $json -ContentType "application/json" -Headers @{
-        Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
-      }
-      
-      Write-Host "Response:" $pipeline
+      Write-Host "URL: $url"
+      $authHeader = @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN" }
+      $definition = Invoke-RestMethod -Uri $url -Headers $authHeader
+      Write-Host "Pipeline = $($definition | ConvertTo-Json -Depth 100)"
+      $definition.variables.versionCode.Value = "2"
+      $definitionJson = $definition | ConvertTo-Json -Depth 100 -Compress
+      Invoke-RestMethod -Method Put -Uri $url -Headers $authHeader -ContentType "application/json" -Body ([System.Text.Encoding]::UTF8.GetBytes($definitionJson)) | Out-Null
