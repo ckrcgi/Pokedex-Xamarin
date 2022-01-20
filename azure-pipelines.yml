@@ -35,6 +35,9 @@ steps:
       function CreateJsonBody {
         $value = @"
       {
+        "id": 6,
+        "type": "Vsts",
+        "name": "Pokedex",
         "variables": {
           "versionCode": {
             "isSecret": false,
@@ -54,4 +57,4 @@ steps:
         Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
       }
       
-      Write-Host "New Variable Value:" $pipeline.variables.TEST0926.value
+      Write-Host "Response:" $pipeline
