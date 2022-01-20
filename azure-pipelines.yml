@@ -29,7 +29,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups/6?api-version=6.0"
+      $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups?groupIds=6&api-version=6.0
       Write-Host $url
       
       function CreateJsonBody {
@@ -51,7 +51,7 @@ steps:
       Write-Host $env:SYSTEM_ACCESSTOKEN
       
       
-      $pipeline = Invoke-RestMethod -Uri $url -Method Put -Body $json -ContentType "application/json" -Headers @{
+      $pipeline = Invoke-RestMethod -Uri $url -Method Get -ContentType "application/json" -Headers @{
         Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
       }
       
