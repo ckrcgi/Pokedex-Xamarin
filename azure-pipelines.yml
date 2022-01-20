@@ -29,17 +29,17 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups?groupIds=6&api-version=6.0-preview.2"
+      $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups?groupIds=6&api-version=6.0"
       Write-Host $url
       
       function CreateJsonBody {
         $value = @"
       {
         "variables": {
-          "TEST0926": {
+          "versionCode": {
             "isReadOnly: false,
             "isSecret": false,
-            "value": "0930"
+            "value": "2"
           }
         }
       }
