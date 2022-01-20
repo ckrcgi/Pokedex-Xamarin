@@ -28,4 +28,4 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'Write-Host "##vso[task.setvariable variable=versionCode;]2"'
+    script: 'Write-Host "##vso[task.setvariable variable=versionCode;issecret=false]2"'
