@@ -29,7 +29,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $VariableGroupId = 5
+      $VariableGroupId = 6
       $NewValue = 10
       $VariableName = "versionCode"
       
