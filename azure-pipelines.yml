@@ -56,5 +56,3 @@ steps:
       }
       
       Write-Host "Response:" $pipeline
-  env:
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
