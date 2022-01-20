@@ -35,9 +35,6 @@ steps:
       function CreateJsonBody {
         $value = @"
       {
-        "id": 6,
-        "type": "Vsts",
-        "name": "Pokedex",
         "variables": {
           "versionCode": {
             "isSecret": false,
