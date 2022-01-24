@@ -1,4 +1,11 @@
 # Xamarin.Android
+- task: VersionAssemblies@2
+  inputs:
+    sourcePath: 'Droid/Properties'
+    filePattern: 'AndroidManifest.xml'
+    versionSource: 'buildNumber'
+    versionFormat: 'fourParts'
+    replaceVersionFormat: 'fourParts'
 # Build a Xamarin.Android project.
 # Add steps that test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
@@ -15,31 +22,31 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '**/*.sln'
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Relative path to the Android Manifest file
-      $MANIFEST_PATH = './Pokedex/Pokedex.Android/Properties/AndroidManifest.xml'
-      
-      # Get current verisonCode from Azure variables and increment it
-      $newVersion = [int]'12' + 1
-      
-      # Replace the actual versionCode with the new incremented one in the Android Manifest file
-      $replaceWith = 'android:versionCode="' + $newVersion + '"'
-      $content = [System.IO.File]::ReadAllText($MANIFEST_PATH) -replace 'android:versionCode="(.*?)"', $replaceWith
-      [System.IO.File]::WriteAllText($MANIFEST_PATH, $content)
-      
-      # Build the app
-      
-      # Release the app update to the Playstore
-      
-      # Update versionCode in Azure variables
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/*droid*.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '**/*.sln'
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Relative path to the Android Manifest file
+#       $MANIFEST_PATH = './Pokedex/Pokedex.Android/Properties/AndroidManifest.xml'
+      
+#       # Get current verisonCode from Azure variables and increment it
+#       $newVersion = [int]'12' + 1
+      
+#       # Replace the actual versionCode with the new incremented one in the Android Manifest file
+#       $replaceWith = 'android:versionCode="' + $newVersion + '"'
+#       $content = [System.IO.File]::ReadAllText($MANIFEST_PATH) -replace 'android:versionCode="(.*?)"', $replaceWith
+#       [System.IO.File]::WriteAllText($MANIFEST_PATH, $content)
+      
+#       # Build the app
+      
+#       # Release the app update to the Playstore
+      
+#       # Update versionCode in Azure variables
