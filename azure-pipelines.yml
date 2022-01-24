@@ -1,11 +1,4 @@
 # Xamarin.Android
-- task: VersionAssemblies@2
-  inputs:
-    sourcePath: 'Droid/Properties'
-    filePattern: 'AndroidManifest.xml'
-    versionSource: 'buildNumber'
-    versionFormat: 'fourParts'
-    replaceVersionFormat: 'fourParts'
 # Build a Xamarin.Android project.
 # Add steps that test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
